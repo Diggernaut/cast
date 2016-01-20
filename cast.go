@@ -71,3 +71,8 @@ func ToIntSlice(i interface{}) []int {
 	v, _ := ToIntSliceE(i)
 	return v
 }
+
+func ToSliceStringMapString(i interface{}) []map[string]string {
+	v, _ := ToSliceStringMapStringE(i)
+	return v
+}
