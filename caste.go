@@ -367,6 +367,7 @@ func ToSliceE(i interface{}) ([]interface{}, error) {
 	}
 }
 
+// ToSliceE casts an interface to a []map[string]string.
 func ToSliceStringMapStringE(i interface{}) ([]map[string]string, error) {
 	jww.DEBUG.Println("ToSliceStringMapStringE called on type:", reflect.TypeOf(i))
 
@@ -374,6 +375,25 @@ func ToSliceStringMapStringE(i interface{}) ([]map[string]string, error) {
 	if s, err := ToSliceE(i); err == nil {
 		for _,v := range s {
 			if m, err := ToStringMapStringE(v); err == nil {
+				new_s = append(new_s,m)
+			} else {
+				return new_s,err
+			}
+		}
+		return new_s, nil
+	} else {
+		return new_s,err
+	}
+}
+
+// ToSliceE casts an interface to a []map[string]interface{}.
+func ToSliceStringMapE(i interface{}) ([]map[string]interface{}, error) {
+	jww.DEBUG.Println("ToSliceStringMapE called on type:", reflect.TypeOf(i))
+
+	var new_s []map[string]interface{}
+	if s, err := ToSliceE(i); err == nil {
+		for _,v := range s {
+			if m, err := ToStringMapE(v); err == nil {
 				new_s = append(new_s,m)
 			} else {
 				return new_s,err

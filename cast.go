@@ -76,3 +76,8 @@ func ToSliceStringMapString(i interface{}) []map[string]string {
 	v, _ := ToSliceStringMapStringE(i)
 	return v
 }
+
+func ToSliceStringMap(i interface{}) []map[string]interface{} {
+	v, _ := ToSliceStringMapE(i)
+	return v
+}
