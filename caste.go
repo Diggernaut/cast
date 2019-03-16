@@ -6,6 +6,7 @@
 package cast
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"reflect"
@@ -86,6 +87,8 @@ func ToFloat64E(i interface{}) (float64, error) {
 	jww.DEBUG.Println("ToFloat64E called on type:", reflect.TypeOf(i))
 
 	switch s := i.(type) {
+	case json.Number:
+		return s.Float64()
 	case float64:
 		return s, nil
 	case float32:
@@ -117,6 +120,8 @@ func ToIntE(i interface{}) (int, error) {
 	jww.DEBUG.Println("ToIntE called on type:", reflect.TypeOf(i))
 
 	switch s := i.(type) {
+	case json.Number:
+		return ToIntE(s.Int64)
 	case int:
 		return s, nil
 	case int64:
@@ -204,6 +209,8 @@ func ToStringE(i interface{}) (string, error) {
 	jww.DEBUG.Println("ToStringE called on type:", reflect.TypeOf(i))
 
 	switch s := i.(type) {
+	case json.Number:
+		return s.String(), nil
 	case string:
 		return s, nil
 	case bool:
@@ -385,16 +392,16 @@ func ToSliceStringMapStringE(i interface{}) ([]map[string]string, error) {
 
 	var new_s []map[string]string
 	if s, err := ToSliceE(i); err == nil {
-		for _,v := range s {
+		for _, v := range s {
 			if m, err := ToStringMapStringE(v); err == nil {
-				new_s = append(new_s,m)
+				new_s = append(new_s, m)
 			} else {
-				return new_s,err
+				return new_s, err
 			}
 		}
 		return new_s, nil
 	} else {
-		return new_s,err
+		return new_s, err
 	}
 }
 
@@ -404,16 +411,16 @@ func ToSliceStringMapE(i interface{}) ([]map[string]interface{}, error) {
 
 	var new_s []map[string]interface{}
 	if s, err := ToSliceE(i); err == nil {
-		for _,v := range s {
+		for _, v := range s {
 			if m, err := ToStringMapE(v); err == nil {
-				new_s = append(new_s,m)
+				new_s = append(new_s, m)
 			} else {
-				return new_s,err
+				return new_s, err
 			}
 		}
 		return new_s, nil
 	} else {
-		return new_s,err
+		return new_s, err
 	}
 }
 
