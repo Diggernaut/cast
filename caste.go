@@ -121,7 +121,11 @@ func ToIntE(i interface{}) (int, error) {
 
 	switch s := i.(type) {
 	case json.Number:
-		return ToIntE(s.Int64)
+		v, err := s.Int64()
+		if err == nil {
+			return ToIntE(v)
+		}
+		return 0, fmt.Errorf("unable to cast %#v of type %T to int", i, i)
 	case int:
 		return s, nil
 	case int64:
