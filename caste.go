@@ -223,6 +223,8 @@ func ToStringE(i interface{}) (string, error) {
 		return strconv.FormatFloat(i.(float64), 'f', -1, 64), nil
 	case int:
 		return strconv.FormatInt(int64(i.(int)), 10), nil
+	case uint:
+		return strconv.FormatInt(int64(i.(uint)), 10), nil
 	case []byte:
 		return string(s), nil
 	case template.HTML:
